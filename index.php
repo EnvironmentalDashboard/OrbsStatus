@@ -9,7 +9,7 @@ try {
 catch (PDOException $e) { die($e->getMessage()); }
 
 ?>
-<h1 style="color: Blue; text-align: center;"> Orb Information </h1>
+<h1 style="color: Blue; text-align: center;"> Orb Information  <button type="submit" form="change" value="Submit">Submit Changes</button> </h1>
 <p><table align="center" style="border: 1px solid black; ">
   <tr style="text-align:left;">
     <th>Orb Name</th>
@@ -20,6 +20,7 @@ catch (PDOException $e) { die($e->getMessage()); }
     <th>Water RVID</th>
     <th>Relative Value(0-100)</th>
     <th>Relative Value(0-4)</th>
+    <th>Value Change Form </th>
 
   </tr>
   <?php foreach ($db->query('SELECT name,inet_ntoa(ip),water_uuid, elec_uuid, elec_rvid, water_rvid, relative_value FROM orbs o inner join relative_values rv on o.water_rvid=rv.id') as $row) {?>
@@ -49,11 +50,16 @@ catch (PDOException $e) { die($e->getMessage()); }
     }
     ?>
   </td>
+<td> <form name="change" method="post" action="">
+  <select name="Relative Value Change">
+  <option value="0">0</option>
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  </select>
+</form>
+</td>
   </tr>
 <?php } ?>
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
 </table></p>
