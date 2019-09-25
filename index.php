@@ -9,7 +9,7 @@ try {
 catch (PDOException $e) { die($e->getMessage()); }
 
 ?>
-<h1 style="color: Blue; text-align: center;"> Orb Information  <button type="submit" form="change" value="Submit">Submit Changes</button> </h1>
+<h1 style="color: Blue; text-align: center;"> Orb Information</h1>
 <p><table align="center" style="border: 1px solid black; ">
   <tr style="text-align:left;">
     <th>Orb Name</th>
@@ -50,7 +50,7 @@ catch (PDOException $e) { die($e->getMessage()); }
     }
     ?>
   </td>
-<td> <form name="change" method="post" action="">
+<td> <form name="change" method="post" action="update.php">
   <select name="Relative Value Change">
   <option value="0">0</option>
   <option value="1">1</option>
@@ -58,6 +58,7 @@ catch (PDOException $e) { die($e->getMessage()); }
   <option value="3">3</option>
   <option value="4">4</option>
   </select>
+  <input type="submit" value="Submit">
 </form>
 </td>
   </tr>
