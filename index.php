@@ -35,16 +35,16 @@ catch (PDOException $e) { die($e->getMessage()); }
     <td><?php if($row['relative_value']==0){
       echo "0";
     }
-    if($row['relative_value']==25){
+    if($row['relative_value']>0 and $row['relative_value']<=25){
       echo "1";
     }
-    if($row['relative_value']==50){
+    if($row['relative_value']>25 and $row['relative_value']<=50){
       echo "2";
     }
-    if($row['relative_value']==75){
+    if($row['relative_value']>50 and $row['relative_value']<=75){
       echo "3";
     }
-    if($row['relative_value']==100){
+    if($row['relative_value']>75 and $row['relative_value']<=100){
       echo "4";
     }
     ?>
