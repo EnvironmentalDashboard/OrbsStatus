@@ -1,1 +1,7 @@
-<?php echo $_POST["Relative Value Change"] ?>
+<html>
+<body>
+
+  <?php echo $_POST["relval"] ?>
+
+</body>
+</html>
