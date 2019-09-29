@@ -10,6 +10,7 @@ catch (PDOException $e) { die($e->getMessage()); }
 
 ?>
 <h1 style="color: Blue; text-align: center;"> Orb Information</h1>
+
 <p><table align="center" style="border: 1px solid black; ">
   <tr style="text-align:left;">
     <th>Orb Name</th>
@@ -21,9 +22,31 @@ catch (PDOException $e) { die($e->getMessage()); }
     <th>Water Relative Value(0-100)</th>
     <th>Water Relative Value(0-4)</th>
     <th>Water Value Change Form </th>
+    <th>Electric Relative Value(0-100)</th>
+    <th>Electric Relative Value(0-4)</th>
+    <th>Electric Value Change Form </th>
 
   </tr>
-  <?php foreach ($db->query('SELECT name,inet_ntoa(ip),water_uuid, elec_uuid, elec_rvid, water_rvid, relative_value FROM orbs o inner join relative_values rv on o.water_rvid=rv.id') as $row) {?>
+
+<?php
+  foreach ($db->query('SELECT name,inet_ntoa(ip),water_uuid, elec_uuid, elec_rvid, water_rvid FROM orbs o') as $row) {
+  $waterrvid= $row['water_rvid'];
+  $elecrvid= $row['elec_rvid'];
+  $inwater='SELECT relative_value FROM relative_values WHERE id='.$waterrvid;
+  $inelec='SELECT relative_value FROM relative_values WHERE id='.$elecrvid;
+  $waterrel=$db->query($inwater)->fetchColumn();
+  $wgone=false;
+  $egone=false;
+  if(empty($waterrel)){
+    $waterrel="N/A";
+    $wgone=true;
+  }
+  $elecrel=$db->query($inelec)->fetchColumn();
+  if(empty($elecrel)){
+    $elecrel="N/A";
+    $egone=true;
+  }
+ ?>
 
   <tr>
     <td><?php echo $row['name'] ?></td>
@@ -32,31 +55,23 @@ catch (PDOException $e) { die($e->getMessage()); }
     <td><?php echo $row['elec_uuid'] ?></td>
     <td><?php echo $row['elec_rvid'] ?></td>
     <td><?php echo $row['water_rvid'] ?></td>
-    <td><?php echo $row['relative_value'] ?></td>
-    <td><?php if($row['relative_value']>=0 and $row['relative_value']<20){
-      echo "0";
+    <td><?php echo $waterrel?></td>
+    <td><?php if($wgone){
+      echo "N/A";
     }
-    if($row['relative_value']>=20 and $row['relative_value']<40){
-      echo "1";
+    else{
+      echo (int)(($waterrel/100)*4);
     }
-    if($row['relative_value']>=40 and $row['relative_value']<60){
-      echo "2";
-    }
-    if($row['relative_value']>=60 and $row['relative_value']<80){
-      echo "3";
-    }
-    if($row['relative_value']>=80 and $row['relative_value']<=100){
-      echo "4";
-    }
-    ?>
-  </td>
+    ?></td>
+
+
 <td> <form name="change" method="post" action="update.php">
   <select name="relval">
-  <option value="water0<?php echo $row['name']?>">0</option>
-  <option value="water1<?php echo $row['name']?>">1</option>
-  <option value="water2<?php echo $row['name']?>">2</option>
-  <option value="water3<?php echo $row['name']?>">3</option>
-  <option value="water4<?php echo $row['name']?>">4</option>
+  <option value="0<?php echo $row['water_rvid']?>">0</option>
+  <option value="1<?php echo $row['water_rvid']?>">1</option>
+  <option value="2<?php echo $row['water_rvid']?>">2</option>
+  <option value="3<?php echo $row['water_rvid']?>">3</option>
+  <option value="4<?php echo $row['water_rvid']?>">4</option>
   </select>
   <input type="submit" value="Submit">
 </form>
