@@ -13,9 +13,9 @@
     $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
   }
   catch (PDOException $e) { die($e->getMessage()); }
-  $updateinput='UPDATE relative_values SET relative_value='.$newvalue.' WHERE id='.$iduse;
-  echo $updateinput;
-  //$db->query($updateinput);
+  $updateinput='UPDATE relative_values SET relative_value='.$newvalueuse.' WHERE id='.$iduse;
+  //echo $updateinput;
+  $db->query($updateinput);
   ?>
 
 </body>
