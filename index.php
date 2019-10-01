@@ -74,11 +74,11 @@ catch (PDOException $e) { die($e->getMessage()); }
   <!-- SHOULD IT ONLY HAVE A FORM FOR WORKING VALUES? -->
   <form name="changewater" method="post" action="update.php">
   <select name="relval">
-  <option value="0<?php echo $row['water_rvid']?>">0</option>
-  <option value="1<?php echo $row['water_rvid']?>">1</option>
-  <option value="2<?php echo $row['water_rvid']?>">2</option>
-  <option value="3<?php echo $row['water_rvid']?>">3</option>
-  <option value="4<?php echo $row['water_rvid']?>">4</option>
+  <option value="0<?php echo $row['water_rvid']; echo $row['name']?>">0</option>
+  <option value="1<?php echo $row['water_rvid']; echo $row['name']?>">1</option>
+  <option value="2<?php echo $row['water_rvid']; echo $row['name']?>">2</option>
+  <option value="3<?php echo $row['water_rvid']; echo $row['name']?>">3</option>
+  <option value="4<?php echo $row['water_rvid']; echo $row['name']?>">4</option>
   </select>
   <input type="submit" value="Submit">
 </form>
@@ -94,11 +94,11 @@ else{
 <td>
 <form name="changeelec" method="post" action="update.php">
 <select name="relval">
-<option value="0<?php echo $row['elec_rvid']?>">0</option>
-<option value="1<?php echo $row['elec_rvid']?>">1</option>
-<option value="2<?php echo $row['elec_rvid']?>">2</option>
-<option value="3<?php echo $row['elec_rvid']?>">3</option>
-<option value="4<?php echo $row['elec_rvid']?>">4</option>
+<option value="0<?php echo $row['elec_rvid']; echo $row['name']?>">0</option>
+<option value="1<?php echo $row['elec_rvid']; echo $row['name']?>">1</option>
+<option value="2<?php echo $row['elec_rvid']; echo $row['name']?>">2</option>
+<option value="3<?php echo $row['elec_rvid']; echo $row['name']?>">3</option>
+<option value="4<?php echo $row['elec_rvid']; echo $row['name']?>">4</option>
 </select>
 <input type="submit" value="Submit">
 </form>
