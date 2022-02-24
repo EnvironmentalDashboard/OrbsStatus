@@ -1,6 +1,8 @@
+<?php
+header('Location:index.php');
+  ?>
 <html>
 <body>
-
   <?php
   $ipuse = $_POST["change"];
   require 'db.php';
@@ -13,7 +15,7 @@
   catch (PDOException $e) { die($e->getMessage()); }
   $updatetest='UPDATE orbs SET testing=1 WHERE ip="'.$ipuse.'"';;
   $db->query($updatetest);
+  //header('Location:index.php');
   ?>
-
 </body>
 </html>

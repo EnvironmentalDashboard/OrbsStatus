@@ -9,19 +9,19 @@ try {
 catch (PDOException $e) { die($e->getMessage()); }
 
 ?>
-<h1 style="color: Blue; text-align: center;"> Orb Information</h1>
+<h1 style="color: Green; text-align: center;"> Orb Information</h1>
 
 <p><table align="center" style="border: 1px solid black; ">
-  <tr style="text-align:left;">
+  <tr>
     <th>Orb Name</th>
-    <th>IP Number</th>
+    <!-- <th>IP Number</th>
     <th>Water UUID</th>
     <th>Electric UUID</th>
     <th>Electric RVID</th>
     <th>Water RVID</th>
-    <th>Water Relative Value(0-100)</th>
+    <th>Water Relative Value(0-100)</th> -->
     <th>Water Relative Value(0-4)</th>
-    <th>Electric Relative Value(0-100)</th>
+    <!-- <th>Electric Relative Value(0-100)</th> -->
     <th>Electric Relative Value(0-4)</th>
     <th>Test Orb</th>
 
@@ -49,7 +49,7 @@ catch (PDOException $e) { die($e->getMessage()); }
 
   <tr>
     <td><?php echo $row['name'] ?></td>
-    <td><?php echo $row['inet_ntoa(ip)'] ?></td>
+    <!-- <td><?php echo $row['inet_ntoa(ip)'] ?></td>
     <td><?php echo $row['water_uuid']
     ?></td>
     <td><?php echo $row['elec_uuid']
@@ -57,7 +57,7 @@ catch (PDOException $e) { die($e->getMessage()); }
     ?></td>
     <td><?php echo $row['elec_rvid'] ?></td>
     <td><?php echo $row['water_rvid'] ?></td>
-    <td><?php echo $waterrel?></td>
+    <td><?php echo $waterrel?></td> -->
     <td><?php if($wgone){
       echo "N/A";
     }
@@ -66,7 +66,7 @@ catch (PDOException $e) { die($e->getMessage()); }
     }
     ?></td>
 
-<td><?php echo $elecrel?></td>
+<!-- <td><?php echo $elecrel?></td> -->
 <td><?php if($egone){
   echo "N/A";
 }
