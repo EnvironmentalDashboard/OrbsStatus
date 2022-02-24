@@ -21,15 +21,14 @@ catch (PDOException $e) { die($e->getMessage()); }
     <th>Water RVID</th>
     <th>Water Relative Value(0-100)</th>
     <th>Water Relative Value(0-4)</th>
-    <th>Water Value Change Form </th>
     <th>Electric Relative Value(0-100)</th>
     <th>Electric Relative Value(0-4)</th>
-    <th>Electric Value Change Form </th>
+    <th>Test Orb</th>
 
   </tr>
 
 <?php
-  foreach ($db->query('SELECT name,inet_ntoa(ip),water_uuid, elec_uuid, elec_rvid, water_rvid FROM orbs o') as $row) {
+  foreach ($db->query('SELECT name,inet_ntoa(ip),ip, water_uuid, elec_uuid, elec_rvid, water_rvid FROM orbs o') as $row) {
   $waterrvid= $row['water_rvid'];
   $elecrvid= $row['elec_rvid'];
   $inwater='SELECT relative_value FROM relative_values WHERE id='.$waterrvid;
@@ -37,7 +36,6 @@ catch (PDOException $e) { die($e->getMessage()); }
   $waterrel=$db->query($inwater)->fetchColumn();
   $wgone=false;
   $egone=false;
-  //SHOULD I CHECK FOR N/A FOR OTHER COLUMNS?
   if(empty($waterrel)){
     $waterrel="N/A";
     $wgone=true;
@@ -53,7 +51,6 @@ catch (PDOException $e) { die($e->getMessage()); }
     <td><?php echo $row['name'] ?></td>
     <td><?php echo $row['inet_ntoa(ip)'] ?></td>
     <td><?php echo $row['water_uuid']
-    //CHECK Empty
     ?></td>
     <td><?php echo $row['elec_uuid']
     //CHECK Empty>
@@ -69,20 +66,6 @@ catch (PDOException $e) { die($e->getMessage()); }
     }
     ?></td>
 
-
-<td>
-  <!-- SHOULD IT ONLY HAVE A FORM FOR WORKING VALUES? -->
-  <form name="changewater" method="post" action="update.php">
-  <select name="relval">
-  <option value="0<?php echo $row['water_rvid']; echo $row['name']?>">0</option>
-  <option value="1<?php echo $row['water_rvid']; echo $row['name']?>">1</option>
-  <option value="2<?php echo $row['water_rvid']; echo $row['name']?>">2</option>
-  <option value="3<?php echo $row['water_rvid']; echo $row['name']?>">3</option>
-  <option value="4<?php echo $row['water_rvid']; echo $row['name']?>">4</option>
-  </select>
-  <input type="submit" value="Submit">
-</form>
-</td>
 <td><?php echo $elecrel?></td>
 <td><?php if($egone){
   echo "N/A";
@@ -92,15 +75,8 @@ else{
 }
 ?></td>
 <td>
-<form name="changeelec" method="post" action="update.php">
-<select name="relval">
-<option value="0<?php echo $row['elec_rvid']; echo $row['name']?>">0</option>
-<option value="1<?php echo $row['elec_rvid']; echo $row['name']?>">1</option>
-<option value="2<?php echo $row['elec_rvid']; echo $row['name']?>">2</option>
-<option value="3<?php echo $row['elec_rvid']; echo $row['name']?>">3</option>
-<option value="4<?php echo $row['elec_rvid']; echo $row['name']?>">4</option>
-</select>
-<input type="submit" value="Submit">
+<form method="post" action="update.php">
+<input type="submit" name="change" value=<?php echo $row['ip'] ?> >
 </form>
 </td>
   </tr>
