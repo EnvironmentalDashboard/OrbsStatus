@@ -36,12 +36,12 @@ catch (PDOException $e) { die($e->getMessage()); }
   $waterrel=$db->query($inwater)->fetchColumn();
   $wgone=false;
   $egone=false;
-  if(empty($waterrel)){
+  if(empty($waterrel) && $waterrel !=0){
     $waterrel="N/A";
     $wgone=true;
   }
   $elecrel=$db->query($inelec)->fetchColumn();
-  if(empty($elecrel)){
+  if(empty($elecrel) && $elecrel !=0){
     $elecrel="N/A";
     $egone=true;
   }
