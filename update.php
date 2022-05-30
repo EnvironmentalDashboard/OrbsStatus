@@ -13,7 +13,7 @@ header('Location:index.php');
     $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
   }
   catch (PDOException $e) { die($e->getMessage()); }
-  $updatetest='UPDATE orbs SET testing=1 WHERE ip="'.$ipuse.'"';;
+  $updatetest='UPDATE orbs SET testing=1 WHERE ip="'.$ipuse.'"';
   $db->query($updatetest);
   //header('Location:index.php');
   ?>
