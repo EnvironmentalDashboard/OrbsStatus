@@ -1,0 +1,26 @@
+.check-status {
+  width: 100px;
+}
+
+.disconnected {
+  background: #ffd5d5;
+}
+
+.connected {
+  background: #cbffb5;
+}
+
+.table-content {
+  /* margin-top: -3.5%; */
+}
+
+.table-content thead {
+  visibility: hidden;
+}
+
+.fixed-header {
+  position: sticky;
+  background: #fff;
+  top: 0;
+  z-index: 2;
+}
