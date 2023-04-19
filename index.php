@@ -69,22 +69,20 @@
     </thead>
     <tbody>
 
-      <?php
-      $result = $db->query('SELECT `name`,inet_ntoa(ip),ip, water_uuid, elec_uuid, elec_rvid, water_rvid, testing FROM orbs o WHERE disabled = 0 ORDER BY `name`');
+    <?php
+
+      $result = $db->query('SELECT name,inet_ntoa(ip),ip, water_uuid, elec_uuid, elec_rvid, water_rvid, r1.relative_value as elec_rv, r2.relative_value as water_rv, testing FROM orbs o LEFT JOIN relative_values r1 ON r1.id = o.elec_rvid LEFT JOIN relative_values r2 ON r2.id = o.water_rvid WHERE o.disabled = 0 ORDER BY `name`');
 
       foreach ($result as $row) {
-        $waterrvid = $row['water_rvid'];
-        $elecrvid = $row['elec_rvid'];
-        $inwater = 'SELECT relative_value FROM relative_values WHERE id=' . $waterrvid;
-        $inelec = 'SELECT relative_value FROM relative_values WHERE id=' . $elecrvid;
-        $waterrel = $db->query($inwater)->fetchColumn();
+
+        $waterrel = $row['water_rv'];
+        $elecrel = $row['elec_rv'];
         $wgone = false;
         $egone = false;
         if (empty($waterrel) && $waterrel != 0) {
           $waterrel = "N/A";
           $wgone = true;
         }
-        $elecrel = $db->query($inelec)->fetchColumn();
         if (empty($elecrel) && $elecrel != 0) {
           $elecrel = "N/A";
           $egone = true;
