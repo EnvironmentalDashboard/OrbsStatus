@@ -1,3 +1,4 @@
+
 FROM php:7-apache
 WORKDIR /var/www/html
 ENV TZ=America/New_York
@@ -5,5 +6,7 @@ ENV TZ=America/New_York
 RUN apt-get update && apt-get install -y zlib1g-dev libzip-dev && \
     docker-php-ext-install zip pdo_mysql && \
     a2enmod rewrite headers
+
+RUN docker-php-ext-install sockets
 # copy rest of files later to take advantage of cache
 COPY . .
