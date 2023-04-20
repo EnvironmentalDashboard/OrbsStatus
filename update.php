@@ -51,17 +51,17 @@ if(count($_POST) == 0){
     $response = [
       "status" => $status,
       "command" => $command,
-      'update_date' => date('h:i A m-d-Y')
     ];
 
     if($status == SUCCESS){
       $result = exec($command);
       echo json_encode($response + [
-        "message" => "Orb is connected"
+        "message" => "Orb is connected",
+        'update_date' => date('h:i A m-d-Y')
       ]);
     }else{
       echo json_encode($response + [
-        "message" => "Orb is disconnected"
+        "message" => "Orb is disconnected",
       ]);
     }
     

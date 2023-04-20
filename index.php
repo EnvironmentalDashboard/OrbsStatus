@@ -184,7 +184,9 @@
               parentRow.addClass('disconnected')
             }
 
-            parentRow.find('td.last-update').text(data.update_date);
+            if (data.update_date){
+              parentRow.find('td.last-update').text(data.update_date);
+            }
 
           } else {
             $(this).text('Test')
