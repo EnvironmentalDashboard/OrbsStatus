@@ -47,6 +47,6 @@
     } catch (PDOException $e) {
       die($e->getMessage());
     }
-    $db->query($updatetest);
+    $db->query($updateOrbsStatusQuery);
   }
   ?>
