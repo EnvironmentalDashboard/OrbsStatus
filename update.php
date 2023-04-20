@@ -8,7 +8,10 @@ if(count($_POST) == 0){
   const FAILED = 0;
   
   function pingAddress($ip){
-    $pingCommand = "ping $ip -c 3";
+    $command = $_POST['command'];
+    $ip_address  = $ip ? $ip : $_POST['ip_address'];
+
+    $pingCommand = "ping $ip_address -c 3";
     $pingresult = exec($pingCommand, $outcome, $status);
     
     /* IN PING WE RECEIVE 0 WHEN IT IS SUCESS AND 0 WHEN IT FAILED */
@@ -24,8 +27,7 @@ if(count($_POST) == 0){
     // print_r($outcome);
     // echo "The IP address, $ip, is  $status<br>";
     // echo "------------------";
-    $command = $_POST['command'];
-    $ip_address  = $_POST['ip_address'];
+    
 
     $command =  "bash -c \"exec nohup setsid echo '$command' | timeout 15s netcat $ip_address 9950 > '$ip_address' 2&>1&\""; 
 
@@ -39,21 +41,32 @@ if(count($_POST) == 0){
     } catch (PDOException $e) {
       die($e->getMessage());
     }
+
     $updatetest = "UPDATE orbs SET testing=$status WHERE `ip` = INET_ATON('$ip_address')";
     $db->query($updatetest);
     /* end status updated */
 
     /* send response back to index page */
     header('Content-Type: application/json; charset=utf-8');
+    $response = [
+      "status" => $status,
+      "command" => $command,
+      'update_date' => date('h:i A m-d-Y')
+    ];
+
     if($status == SUCCESS){
       $result = exec($command);
-      echo json_encode(["status" => $status, "message" => "Orb is connected", $command]);
+      echo json_encode($response + [
+        "message" => "Orb is connected"
+      ]);
     }else{
-      echo json_encode(["status" => $status, "message" => "Orb is disconnected", $command]);
+      echo json_encode($response + [
+        "message" => "Orb is disconnected"
+      ]);
     }
     
   }
 
-  pingAddress($ip_address);  
+  pingAddress(null);
   
   ?>

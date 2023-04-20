@@ -34,6 +34,7 @@
         <tr>
           <th>Orb Name</th>
           <th>IP Address</th>
+          <th>Last Connected On</th>
           <!-- <th>Water UUID</th>
           <th>Electric UUID</th>
           <th>Electric RVID</th>
@@ -54,6 +55,7 @@
       <tr>
         <th>Orb Name</th>
         <th>IP Address</th>
+        <th>Last Connected On</th>
         <!-- <th>Water UUID</th>
         <th>Electric UUID</th>
         <th>Electric RVID</th>
@@ -69,9 +71,9 @@
     </thead>
     <tbody>
 
-    <?php
+      <?php
 
-      $result = $db->query('SELECT name,inet_ntoa(ip),ip, water_uuid, elec_uuid, elec_rvid, water_rvid, r1.relative_value as elec_rv, r2.relative_value as water_rv, testing FROM orbs o LEFT JOIN relative_values r1 ON r1.id = o.elec_rvid LEFT JOIN relative_values r2 ON r2.id = o.water_rvid WHERE o.disabled = 0 ORDER BY `name`');
+      $result = $db->query('SELECT name,inet_ntoa(ip),ip, water_uuid, elec_uuid, elec_rvid, water_rvid, o.last_updated, r1.relative_value as elec_rv, r2.relative_value as water_rv, testing FROM orbs o LEFT JOIN relative_values r1 ON r1.id = o.elec_rvid LEFT JOIN relative_values r2 ON r2.id = o.water_rvid WHERE o.disabled = 0 ORDER BY `name`');
 
       foreach ($result as $row) {
 
@@ -88,17 +90,19 @@
           $egone = true;
         }
         $backgroundClass = '';
-        if($row['testing'] == SUCCESS){
+        if ($row['testing'] == SUCCESS) {
           $backgroundClass = "connected";
-        }else if($row['testing'] == FAILED){
+        } else if ($row['testing'] == FAILED) {
           $backgroundClass = "disconnected";
         }
-        
+        $date = new DateTimeImmutable($row['last_updated']);
+
       ?>
 
-        <tr class="<?=$backgroundClass?>">
+        <tr class="<?= $backgroundClass ?>">
           <td><?php echo $row['name'] ?></td>
           <td class="ip-address"><?php echo $row['inet_ntoa(ip)'] ?></td>
+          <td class="last-update"><?php echo $date->format('m-d-Y h:i A') ?></td>
           <!--//CHECK Empty-->
           <!-- <td><?php echo $row['water_uuid'] ?></td>
           <td><?php echo $row['elec_uuid'] ?></td>
@@ -161,12 +165,16 @@
       const electricity_rv = parentRow.find("[name=electricity_rv]").val();
       const water_rv = parentRow.find("[name=water_rv]").val();
       const ip_address = parentRow.find('td.ip-address').text();
+
+      $(this).removeClass('btn-danger btn-success')
       $(this).text('Loading..')
+
       $.post('update.php', {
           command: `/E${electricity_rv}W${water_rv}$`,
           ip_address,
         }, (data, textStatus, jqueryXHR) => {
           parentRow.removeClass('connected disconnected');
+
           if (jqueryXHR.status == 200) {
             if (data.status == <?= SUCCESS ?>) {
               parentRow.addClass('connected')
@@ -175,11 +183,14 @@
               $(this).addClass('btn-danger').text('Failed')
               parentRow.addClass('disconnected')
             }
+
+            parentRow.find('td.last-update').text(data.update_date);
+
           } else {
             $(this).text('Test')
           }
         }).done(() => {})
-        .fail(() => {
+        .fail((data) => {
           $(this).addClass('btn-danger').text('Failed')
         })
     })
