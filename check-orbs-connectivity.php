@@ -38,9 +38,15 @@
     // $instance = new AsyncOperation($db, $row['ip_address']);
     // $instance->start();
   }
-  print_r($updateOrbsStatusQuery);
 
   if(strlen($updateOrbsStatusQuery)){
+    try {
+      $db = new PDO($con, "{$username}", "{$password}"); // cast as string bc cant pass as reference
+      $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+      die($e->getMessage());
+    }
     $db->query($updatetest);
   }
   ?>
