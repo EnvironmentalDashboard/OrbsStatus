@@ -73,7 +73,7 @@
 
       <?php
 
-      $result = $db->query('SELECT name,inet_ntoa(ip),ip, water_uuid, elec_uuid, elec_rvid, water_rvid, o.last_updated, r1.relative_value as elec_rv, r2.relative_value as water_rv, testing FROM orbs o LEFT JOIN relative_values r1 ON r1.id = o.elec_rvid LEFT JOIN relative_values r2 ON r2.id = o.water_rvid WHERE o.disabled = 0 ORDER BY `name`');
+      $result = $db->query('SELECT name,inet_ntoa(ip),ip, water_uuid, elec_uuid, elec_rvid, water_rvid, o.last_connectioned_on, r1.relative_value as elec_rv, r2.relative_value as water_rv, testing FROM orbs o LEFT JOIN relative_values r1 ON r1.id = o.elec_rvid LEFT JOIN relative_values r2 ON r2.id = o.water_rvid WHERE o.disabled = 0 ORDER BY `name`');
 
       foreach ($result as $row) {
 
@@ -95,14 +95,14 @@
         } else if ($row['testing'] == FAILED) {
           $backgroundClass = "disconnected";
         }
-        $date = new DateTimeImmutable($row['last_updated']);
+        $date = new DateTimeImmutable($row['last_connectioned_on']);
 
       ?>
 
         <tr class="<?= $backgroundClass ?>">
           <td><?php echo $row['name'] ?></td>
           <td class="ip-address"><?php echo $row['inet_ntoa(ip)'] ?></td>
-          <td class="last-update"><?php echo $date->format('m-d-Y h:i A') ?></td>
+          <td class="last-update"><?php echo $row['last_connectioned_on'] ? $date->format('m-d-Y h:i A') : '-' ?></td>
           <!--//CHECK Empty-->
           <!-- <td><?php echo $row['water_uuid'] ?></td>
           <td><?php echo $row['elec_uuid'] ?></td>
