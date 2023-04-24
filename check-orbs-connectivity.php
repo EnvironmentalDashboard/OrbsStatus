@@ -1,5 +1,7 @@
 <?php
   require 'db.php';
+  require './ping-ip-address.php';
+
   set_time_limit(-1);
 
   const SUCCESS = 1;
@@ -14,18 +16,13 @@
     die($e->getMessage());
   }
   $updateOrbsStatusQuery = '';
-  function pingAddress($ip_address){
 
-    $pingCommand = "ping $ip_address -c 2";
-    $pingresult = exec($pingCommand, $outcome, $status);
-    
-    /* IN PING WE RECEIVE 0 WHEN IT IS SUCESS AND 0 WHEN IT FAILED */
+  function checkIp($ip_address){
     $timestampQuery = '';
-    if (0 == $status) {
-      $status = SUCCESS;
+
+    $status = pingIpAddress($ip_address);
+    if ($status == SUCCESS) {
       $timestampQuery = ", last_connectioned_on = CURRENT_TIMESTAMP";
-    } else {
-      $status = FAILED;
     }
     return "UPDATE orbs SET testing=$status $timestampQuery WHERE `ip` = INET_ATON('$ip_address');";
   }
@@ -34,7 +31,7 @@
 
 
   foreach ($result as $row) {
-    $updateOrbsStatusQuery .= pingAddress($row['ip_address']);
+    $updateOrbsStatusQuery .= checkIp($row['ip_address']);
     // $instance = new AsyncOperation($db, $row['ip_address']);
     // $instance->start();
   }
