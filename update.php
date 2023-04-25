@@ -34,7 +34,7 @@ if(count($_POST) == 0){
     header('Content-Type: application/json; charset=utf-8');
     $response = [
       "current_status" => $status,
-      "command" => $command,
+      "command" => "bash -c \"exec nohup setsid echo '$command' | timeout 15s netcat $ip_address 9950 \"",
     ];
     echo json_encode($response + [
       "message" => "Command dispatched",

@@ -10,7 +10,6 @@ function pingIpAddress($ip_address)
   echo "pingCommand - $pingCommand<br>";
   echo "status - $status<br>";
   echo "pingresult - $pingresult<br>";
-  echo "outcome - $outcome<br>";
   print_r($outcome);
   echo "The IP address, $ip_address, is  $status<br>";
   echo "------------------";

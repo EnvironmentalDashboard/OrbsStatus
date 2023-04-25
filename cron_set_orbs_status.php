@@ -35,7 +35,7 @@
             $status = pingIpAddress($ip_address);
             $timestampQuery = '';
             if ($status == SUCCESS) {
-                $command =  "bash -c \"exec nohup setsid echo '$command' | timeout 15s netcat $ip_address 9950 \""; 
+                $command =  "bash -c \"exec nohup setsid echo '$command' | timeout 15s netcat $ip_address 9950\""; 
                 $result = exec($command);
                 $timestampQuery = ", last_connectioned_on = CURRENT_TIMESTAMP";
             }
