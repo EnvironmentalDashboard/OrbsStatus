@@ -15,7 +15,7 @@ function pingIpAddress($ip_address)
   echo "------------------";
 
   /* IN PING WE RECEIVE 0 WHEN IT IS SUCESS AND 0 WHEN IT FAILED */
-  $timestampQuery = '';
+
   if (0 == $status) {
     $status = SUCCESS;
   } else {
