@@ -8,6 +8,7 @@
     require './ping-ip-address.php';
     $testingDate = date('Y-m-d H:i', $_POST['testingDate']);
     $ip_address  = $ip ? $ip : $_POST['ip_address'];
+    date_default_timezone_set("America/New_York");
 
     set_time_limit(-1);
 
@@ -27,6 +28,7 @@
     $result = $db->query($query);
     
     $status = FAILED;
+    $date = '';
 
     if($result->rowCount() != 0){
       $query = "SELECT last_connectioned_on, testing FROM orbs o WHERE ip = inet_aton('$ip_address')";
@@ -34,7 +36,7 @@
       foreach ($result as $row) {
         $status = $row['testing'];
         $date = new DateTimeImmutable($row['last_connectioned_on']);
-        $date->format('m-d-Y h:i A');
+        $date = $date->format('m-d-Y h:i A');
       }
     }
      /* send response back to index page */
@@ -42,11 +44,12 @@
     $response = [
       "current_status" => $status,
     ];
-
+    if($date){
+      $response['update_date'] = $date;
+    }
     if($status == SUCCESS){
       echo json_encode($response + [
         "message" => "Orb is connected",
-        'update_date' => date('m-d-Y h:i A')
       ]);
     }else{
       echo json_encode($response + [
