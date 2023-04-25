@@ -51,9 +51,9 @@
             $db->query($updateOrbsStatusQuery);
         }
 
-        echo "<br/>", strtotime(date('Y-m-d H:i:s')) < $oneMinuteLater;
-        echo "<br/>", "c ", date('Y-m-d H:i:s') , " d",  date('Y-m-d H:i:s',$oneMinuteLater);
-        echo $updatetest, $updateOrbsStatusQuery;
+        // echo "<br/>", strtotime(date('Y-m-d H:i:s')) < $oneMinuteLater;
+        // echo "<br/>", "c ", date('Y-m-d H:i:s') , " d",  date('Y-m-d H:i:s',$oneMinuteLater);
+        // echo $updatetest, $updateOrbsStatusQuery;
         sleep(10); // sleep for 10 second to run the process again
     }
   ?>
