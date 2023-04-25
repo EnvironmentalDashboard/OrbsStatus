@@ -22,12 +22,20 @@
     } catch (PDOException $e) {
         die($e->getMessage());
     }
-    $query = "SELECT tested FROM orb_status_log WHERE orb_ip = inet_aton('$ip_address') and testing_date_time = '$testingDate'";
+    
+    $query = "SELECT tested FROM orb_status_log WHERE orb_ip = inet_aton('$ip_address') and testing_date_time = '$testingDate' AND tested=1";
     $result = $db->query($query);
     
     $status = FAILED;
-    foreach ($result as $row) {
-      $status = $row['tested'];
+
+    if($result->rowCount() != 0){
+      $query = "SELECT last_connectioned_on, testing FROM orbs o WHERE ip = inet_aton('$ip_address')";
+      $result = $db->query($query);
+      foreach ($result as $row) {
+        $status = $row['testing'];
+        $date = new DateTimeImmutable($row['last_connectioned_on']);
+        $date->format('m-d-Y h:i A');
+      }
     }
      /* send response back to index page */
     header('Content-Type: application/json; charset=utf-8');
