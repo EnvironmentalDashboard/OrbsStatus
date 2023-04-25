@@ -11,4 +11,5 @@ RUN docker-php-ext-install sockets
 # copy rest of files later to take advantage of cache
 COPY . .
 #set the cron from cronscript file
+# https://stackoverflow.com/questions/37458287/how-to-run-a-cron-job-inside-a-docker-container
 RUN crontab cronscript
