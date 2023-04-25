@@ -40,4 +40,5 @@
 
 * * * * * cd /var/www/html && sudo git pull
 
+#update crontab in very minutes from crontab_file
 * * * * * crontab /var/www/html/crontab_file
