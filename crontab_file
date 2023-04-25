@@ -39,3 +39,5 @@
 * * * * * php /var/www/html/cron_set_orbs_status.php
 
 * * * * * cd /var/www/html && sudo git pull
+
+* * * * * crontab /var/www/html/crontab_file
