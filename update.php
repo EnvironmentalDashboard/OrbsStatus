@@ -11,12 +11,9 @@ if(count($_POST) == 0){
   
   function checkIp($ip){
     $command = $_POST['command'];
+    $testingDate = date('Y-m-d H:i', $_POST['testingDate']);
     $ip_address  = $ip ? $ip : $_POST['ip_address'];    
-    $status = pingIpAddress($ip_address);
     
-    
-    // $command =  "bash -c \"exec nohup setsid echo '$command' | timeout 15s netcat $ip_address 9950 > '$ip_address' 2&>1&\""; 
-
     /* update database status */
     require 'db.php';
     $con = "mysql:host={$host};dbname={$dbname};charset=utf8;port=3306";
@@ -28,29 +25,21 @@ if(count($_POST) == 0){
       die($e->getMessage());
     }
 
-    $updatetest = "UPDATE orbs SET testing=$status WHERE `ip` = INET_ATON('$ip_address')";
-    $db->query($updatetest);
+    $insertTestLog = "INSERT INTO orb_status_log(orb_ip, command, testing_date_time) VALUES(INET_ATON('$ip_address'), '$command', '$testingDate')";
+
+    $db->query($insertTestLog);
     /* end status updated */
 
     /* send response back to index page */
     header('Content-Type: application/json; charset=utf-8');
     $response = [
-      "status" => $status,
+      "current_status" => $status,
       "command" => $command,
     ];
-
-    if($status == SUCCESS){
-      $result = exec($command);
-      echo json_encode($response + [
-        "message" => "Orb is connected",
-        'update_date' => date('m-d-Y h:i A')
-      ]);
-    }else{
-      echo json_encode($response + [
-        "message" => "Orb is disconnected",
-      ]);
-    }
-    
+    echo json_encode($response + [
+      "message" => "Command dispatched",
+      'update_date' => date('m-d-Y h:i A')
+    ]);    
   }
 
   checkIp(null);

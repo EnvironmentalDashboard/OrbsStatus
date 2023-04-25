@@ -16,6 +16,7 @@
 
   <?php
   require 'db.php';
+  date_default_timezone_set("America/New_York");
   $con = "mysql:host=$host;dbname=$dbname;charset=utf8;port=$port";
   try {
     $db = new PDO($con, "{$username}", "{$password}"); // cast as string bc cant pass as reference
@@ -99,7 +100,7 @@
 
       ?>
 
-        <tr class="<?= $backgroundClass ?>">
+        <tr data-current-status="<?= $row['testing'] ?>" class="<?= $backgroundClass ?>">
           <td><?php echo $row['name'] ?></td>
           <td class="ip-address"><?php echo $row['inet_ntoa(ip)'] ?></td>
           <td class="last-update"><?php echo $row['last_connectioned_on'] ? $date->format('m-d-Y h:i A') : '-' ?></td>
@@ -165,37 +166,82 @@
       const electricity_rv = parentRow.find("[name=electricity_rv]").val();
       const water_rv = parentRow.find("[name=water_rv]").val();
       const ip_address = parentRow.find('td.ip-address').text();
-
+      
+      /* disable all button while the process is executing  */
+      $('button.check-status').attr('disabled', true);
       $(this).removeClass('btn-danger btn-success')
       $(this).text('Loading..')
+
+      parentRow.data('current-status', 0);
+
+      const testingDate = Math.floor(new Date().getTime() / 1000)
 
       $.post('update.php', {
           command: `/E${electricity_rv}W${water_rv}$`,
           ip_address,
+          testingDate
         }, (data, textStatus, jqueryXHR) => {
           parentRow.removeClass('connected disconnected');
 
           if (jqueryXHR.status == 200) {
-            if (data.status == <?= SUCCESS ?>) {
-              parentRow.addClass('connected')
-              $(this).addClass('btn-success').text('Success')
-            } else {
-              $(this).addClass('btn-danger').text('Failed')
-              parentRow.addClass('disconnected')
-            }
-
-            if (data.update_date){
-              parentRow.find('td.last-update').text(data.update_date);
-            }
-
+            let counter = 0;
+            /* once we request to check the status, then we've to continues check the backend status for every 2 seconds */
+            let intervalProcess;
+            intervalProcess = setInterval(() => {
+              updateStatus(ip_address, testingDate, parentRow, intervalProcess)
+              counter++;
+              /* clear interval after 5 attemps */
+              if (counter == 5) {
+                clearIntervalProcess(intervalProcess, parentRow, data)
+              }
+            }, 3000);
           } else {
             $(this).text('Test')
           }
-        }).done(() => {})
+        }).done(() => {
+
+
+        })
         .fail((data) => {
           $(this).addClass('btn-danger').text('Failed')
         })
-    })
+    });
+
+
+    function updateStatus(ip_address, testingDate, parentRow, intervalProcess) {
+      $.post('get_orbs_status.php', {
+        ip_address,
+        testingDate
+      }, (data, textStatus, jqueryXHR) => {
+        if (jqueryXHR.status == 200 && parentRow.data('current-status') != data.current_status) {
+          /* clear interval even before 5 attemps if we get the result */
+          clearIntervalProcess(intervalProcess, parentRow, data)
+        }
+      }).fail((data) => {
+        button.addClass('btn-danger').text('Failed')
+        $('button.check-status').attr('disabled', false);
+        console.log('api getting failed')
+      })
+    }
+
+    function clearIntervalProcess(intervalProcess, parentRow, data) {
+      clearInterval(intervalProcess);
+      const button = parentRow.find('.check-status');
+      if (data.current_status == <?= SUCCESS ?>) {
+        parentRow.addClass('connected')
+        button.addClass('btn-success').text('Success')
+      } else {
+        parentRow.addClass('disconnected')
+        button.addClass('btn-danger').text('Failed')
+      }
+      if (data.update_date) {
+        parentRow.find('td.last-update').text(data.update_date);
+      }
+      /* set back the button title after getting result */
+      button.addClass('btn-primary').text('Test')
+      /* enable all button  */
+      $('button.check-status').attr('disabled', false);
+    }
   </script>
 </body>
 
