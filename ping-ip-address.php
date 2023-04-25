@@ -12,7 +12,7 @@ function pingIpAddress($ip_address)
   // echo "pingresult - $pingresult<br>";
   // echo "outcome - $outcome<br>";
   // print_r($outcome);
-  // echo "The IP address, $ip, is  $status<br>";
+  // echo "The IP address, $ip_address, is  $status<br>";
   // echo "------------------";
 
   /* IN PING WE RECEIVE 0 WHEN IT IS SUCESS AND 0 WHEN IT FAILED */
