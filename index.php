@@ -29,7 +29,7 @@
   const FAILED = 0;
   ?>
   <div class="fixed-header">
-    <h1 style="color: Green; text-align: center;"> Orb Information</h1>
+    <h1 style="color: Green; text-align: center;text-decoration: underline;"> Orb Information</h1>
     <table align="center" class="table">
       <thead class="thead-light">
         <tr>
@@ -166,7 +166,7 @@
       const electricity_rv = parentRow.find("[name=electricity_rv]").val();
       const water_rv = parentRow.find("[name=water_rv]").val();
       const ip_address = parentRow.find('td.ip-address').text();
-      
+
       /* disable all button while the process is executing  */
       $('button.check-status').attr('disabled', true);
       $(this).removeClass('btn-danger btn-success')
