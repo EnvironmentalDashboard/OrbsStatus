@@ -5,7 +5,7 @@
 ?>
 <?php
     require 'db.php';
-    require './ping-ip-address.php';
+    require 'ping-ip-address.php';
     $testingDate = date('Y-m-d H:i', $_POST['testingDate']);
     $ip_address  = $ip ? $ip : $_POST['ip_address'];
     date_default_timezone_set("America/New_York");
@@ -30,9 +30,13 @@
     $status = FAILED;
     $date = '';
 
+    echo $result->rowCount();
+    exit;
+
     if($result->rowCount() != 0){
       $query = "SELECT last_connectioned_on, testing FROM orbs o WHERE ip = inet_aton('$ip_address')";
       $result = $db->query($query);
+      
       foreach ($result as $row) {
         $status = $row['testing'];
         $date = new DateTimeImmutable($row['last_connectioned_on']);
