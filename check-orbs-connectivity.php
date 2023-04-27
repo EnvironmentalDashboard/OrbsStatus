@@ -1,6 +1,6 @@
 <?php
   require 'db.php';
-  require './ping-ip-address.php';
+  require 'ping-ip-address.php';
 
   set_time_limit(-1);
 
