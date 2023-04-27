@@ -41,10 +41,10 @@
             }
     
             $updateOrbsStatusQuery ="UPDATE orb_status_log SET tested=1 WHERE `orb_ip` = inet_aton('$ip_address') AND tested=0;";
-            $db->query($updatetest);
+            $db->query($updateOrbsStatusQuery);
 
             $updatetest = "UPDATE orbs SET testing=$status $timestampQuery WHERE `ip` = inet_aton('$ip_address')";
-            $db->query($updateOrbsStatusQuery);
+            $db->query($updatetest);
         }
 
         echo "<br/>", strtotime(date('Y-m-d H:i:s')) < $oneMinuteLater;
