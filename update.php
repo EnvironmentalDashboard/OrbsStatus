@@ -11,7 +11,7 @@ if(count($_POST) == 0){
   
   function checkIp($ip){
     $command = $_POST['command'];
-    $testingDate = date('Y-m-d H:i', $_POST['testingDate']);
+    $testingDate = date('Y-m-d H:i:s', $_POST['testingDate']);
     $ip_address  = $ip ? $ip : $_POST['ip_address'];    
     
     /* update database status */

@@ -6,9 +6,9 @@
 <?php
     require 'db.php';
     require 'ping-ip-address.php';
-    $testingDate = date('Y-m-d H:i', $_POST['testingDate']);
+    $testingDate = date('Y-m-d H:i:s', $_POST['testingDate']);
     $ip_address  = $ip ? $ip : $_POST['ip_address'];
-    date_default_timezone_set("America/New_York");
+    // date_default_timezone_set("America/New_York");
 
     set_time_limit(-1);
 
@@ -24,19 +24,17 @@
         die($e->getMessage());
     }
     
-    $query = "SELECT tested FROM orb_status_log WHERE orb_ip = inet_aton('$ip_address') and testing_date_time = '$testingDate' AND tested=1";
-    $result = $db->query($query);
+    $query = "SELECT tested,  inet_ntoa(orb_ip) as ip_address FROM orb_status_log WHERE orb_ip = inet_aton('$ip_address') and testing_date_time = '$testingDate' AND tested=1";
+    $orbsLogResult = $db->query($query);
     
     $status = FAILED;
     $date = '';
 
-    echo $result->rowCount();
-    exit;
-
-    if($result->rowCount() != 0){
-      $query = "SELECT last_connectioned_on, testing FROM orbs o WHERE ip = inet_aton('$ip_address')";
+    foreach ($orbsLogResult as $orb) {
+      $ip = $orb['ip_address'];
+      $query = "SELECT last_connectioned_on, testing FROM orbs o WHERE ip = inet_aton('$ip')";
       $result = $db->query($query);
-      
+
       foreach ($result as $row) {
         $status = $row['testing'];
         $date = new DateTimeImmutable($row['last_connectioned_on']);
