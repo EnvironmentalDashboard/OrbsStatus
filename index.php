@@ -191,7 +191,8 @@
               updateStatus(ip_address, testingDate, parentRow, intervalProcess)
               counter++;
               /* clear interval after 5 attemps */
-              if (counter == 5) {
+              if (counter == 10) {
+                $(this).text(`Attemp ${counter}`)
                 clearIntervalProcess(intervalProcess, parentRow, data)
               }
             }, 3000);
