@@ -21,7 +21,7 @@
 # 
 # m h  dom mon dow   command
 
-* * * * cd /home/kiosk2/oberlin-orbs && /usr/bin/git pull >> /var/www/html/oberlin-orbs-git-pull.log 2>&1
+* * * * * cd /home/kiosk2/oberlin-orbs && /usr/bin/git pull >> /var/www/html/oberlin-orbs-git-pull.log 2>&1
 
 #this script is what sends the data packets to the orbs using netcat every second minute
 * * * * * php /home/kiosk2/oberlin-orbs/orbs.php
@@ -42,10 +42,10 @@
 * * * * * /usr/bin/php /var/www/html/cron_set_orbs_status.php >> /var/www/html/cron_set_orbs_status.log 2>&1
 
 #pull new changes in every 3rd minutes
-*/3 * * * cd /var/www/html && /usr/bin/git checkout . &&  /usr/bin/git pull
+*/3 * * * * cd /var/www/html && /usr/bin/git checkout . &&  /usr/bin/git pull
 
 #update crontab in every 2nd minute from crontab_file
 */2 * * * * crontab /var/www/html/crontab_file
 
 #push the log
-*/3 * * * cd /var/www/html && /usr/bin/git add check-orbs-connectivity.log && /usr/bin/git add oberlin-orbs-git-pull.log && /usr/bin/git commit -m "push logs" && /usr/bin/git push 
+*/3 * * * * cd /var/www/html && /usr/bin/git add check-orbs-connectivity.log && /usr/bin/git add oberlin-orbs-git-pull.log && /usr/bin/git commit -m "push logs" && /usr/bin/git push 
