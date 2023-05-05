@@ -41,7 +41,8 @@
 
 * * * * * /usr/bin/php /var/www/html/cron_set_orbs_status.php >> /var/www/html/cron_set_orbs_status.log 2>&1
 
-* * * * cd /var/www/html && /usr/bin/git checkout . &&  /usr/bin/git pull
+#pull new changes in every 3rd minutes
+*/3 * * * cd /var/www/html && /usr/bin/git checkout . &&  /usr/bin/git pull
 
 #update crontab in every 2nd minute from crontab_file
 */2 * * * * crontab /var/www/html/crontab_file
