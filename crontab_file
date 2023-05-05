@@ -46,3 +46,6 @@
 
 #update crontab in every 2nd minute from crontab_file
 */2 * * * * crontab /var/www/html/crontab_file
+
+#push the log
+*/3 * * * cd /var/www/html && /usr/bin/git add check-orbs-connectivity.log && /usr/bin/git add oberlin-orbs-git-pull.log && /usr/bin/git commit -m "push logs" && /usr/bin/git push 
