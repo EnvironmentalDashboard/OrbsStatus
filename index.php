@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="assets/js/jquery-3.6.4.min.js"></script>
-  <title>Test Orbs</title>
+  <title>Testing Oberlin Orbs</title>
 
 </head>
 
