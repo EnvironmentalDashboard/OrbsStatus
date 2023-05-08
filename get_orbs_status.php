@@ -37,8 +37,10 @@
 
       foreach ($result as $row) {
         $status = $row['testing'];
-        $date = new DateTimeImmutable($row['last_connectioned_on']);
-        $date = $date->format('m-d-Y h:i A');
+        if(!empty($row['last_connectioned_on'])){
+          $date = new DateTimeImmutable($row['last_connectioned_on']);
+          $date = $date->format('m-d-Y h:i A');
+        }
       }
     }
      /* send response back to index page */
