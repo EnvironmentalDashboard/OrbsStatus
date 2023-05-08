@@ -32,11 +32,14 @@
         foreach ($result as $row) {
             $command = $row['command'];
             $ip_address = $row['ip_address'];
+            
+            # execute command on the fly, if the orbs is connected then it will be ping
+            $command =  "bash -c \"exec nohup setsid echo '$command' | timeout 15s netcat $ip_address 9950\""; 
+            $result = exec($command);
+            
             $status = pingIpAddress($ip_address);
             $timestampQuery = '';
             if ($status == SUCCESS) {
-                $command =  "bash -c \"exec nohup setsid echo '$command' | timeout 15s netcat $ip_address 9950\""; 
-                $result = exec($command);
                 $timestampQuery = ", last_connectioned_on = CURRENT_TIMESTAMP";
             }
     
