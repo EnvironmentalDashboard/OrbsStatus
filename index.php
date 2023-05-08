@@ -177,7 +177,7 @@
       const testingDate = Math.floor(new Date().getTime() / 1000)
 
       $.post('update.php', {
-          command: `/E${electricity_rv}W${water_rv}$`,
+          command: `/E${electricity_rv}W${water_rv}&`,
           ip_address,
           testingDate
         }, (data, textStatus, jqueryXHR) => {
