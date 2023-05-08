@@ -38,7 +38,7 @@ if(count($_POST) == 0){
     ];
     echo json_encode($response + [
       "message" => "Command dispatched",
-      'update_date' => date('m-d-Y h:i A')
+      'request_date' => date('m-d-Y h:i A')
     ]);    
   }
 
