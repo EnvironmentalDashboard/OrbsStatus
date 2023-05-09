@@ -34,7 +34,7 @@
             $ip_address = $row['ip_address'];
             
             # execute command on the fly, if the orbs is connected then it will be ping
-            $command =  "bash -c \"exec nohup setsid echo '$command' | timeout 15s netcat $ip_address 9950\""; 
+            $command =  "bash -c \"exec nohup setsid echo '$command' | timeout 2s netcat $ip_address 9950\""; 
             $result = exec($command);
             
             $status = pingIpAddress($ip_address);
