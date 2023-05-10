@@ -43,7 +43,7 @@
                 $timestampQuery = ", last_connectioned_on = CURRENT_TIMESTAMP";
             }
     
-            $updateOrbsStatusQuery ="UPDATE orb_status_log SET tested=1 WHERE `orb_ip` = inet_aton('$ip_address') AND tested=0;";
+            $updateOrbsStatusQuery ="UPDATE orb_status_log SET tested=1, connection_status=$status WHERE `orb_ip` = inet_aton('$ip_address') AND tested=0;";
             $db->query($updateOrbsStatusQuery);
 
             $updatetest = "UPDATE orbs SET testing=$status $timestampQuery WHERE `ip` = inet_aton('$ip_address')";
