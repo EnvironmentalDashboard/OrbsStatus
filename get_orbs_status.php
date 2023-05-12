@@ -24,15 +24,16 @@
         die($e->getMessage());
     }
     
-    $query = "SELECT tested,  inet_ntoa(orb_ip) as ip_address FROM orb_status_log WHERE orb_ip = inet_aton('$ip_address') and testing_date_time = '$testingDate' AND tested=1";
+    $query = "SELECT tested, inet_ntoa(orb_ip) as ip_address FROM orb_status_log WHERE orb_ip = inet_aton('$ip_address') and testing_date_time = '$testingDate' AND tested=1";
     $orbsLogResult = $db->query($query);
     
     $status = FAILED;
     $date = '';
+    $response = [];
 
     foreach ($orbsLogResult as $orb) {
       $ip = $orb['ip_address'];
-      $query = "SELECT last_connectioned_on, testing FROM orbs o WHERE ip = inet_aton('$ip')";
+      $query = "SELECT last_connectioned_on, last_sent_relative_value, testing FROM orbs o WHERE ip = inet_aton('$ip')";
       $result = $db->query($query);
 
       foreach ($result as $row) {
@@ -41,17 +42,31 @@
           $date = new DateTimeImmutable($row['last_connectioned_on']);
           $date = $date->format('m-d-Y h:i A');
         }
+
+        $electricityRV = 'N/A';
+        $last_sent_relative_value = explode('#', $row['last_sent_relative_value']);
+        if (isset($last_sent_relative_value[0]) && is_numeric($last_sent_relative_value[0])) {
+            $electricityRV = $last_sent_relative_value[0];
+        }
+        $waterRV = 'N/A';
+        if (isset($last_sent_relative_value[1]) && is_numeric($last_sent_relative_value[1])) {
+        $waterRV = $last_sent_relative_value[1];
+        }
+        $response = [
+          'waterRV' => $waterRV,
+          'electricityRV' => $electricityRV
+        ];
       }
     }
      /* send response back to index page */
     header('Content-Type: application/json; charset=utf-8');
-    $response = [
+    $response = array_merge($response, [
       "current_status" => $status,
-    ];
-    if($date){
-      $response['update_date'] = $date;
-    }
+    ]);
     if($status == SUCCESS){
+      if($date){
+        $response['update_date'] = $date;
+      }
       echo json_encode($response + [
         "message" => "Orb is connected",
       ]);

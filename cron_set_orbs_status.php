@@ -32,7 +32,12 @@
         foreach ($result as $row) {
             $command = $row['command'];
             $ip_address = $row['ip_address'];
-            
+            echo "\n", $command, $ip_address;
+            try {
+                $last_sent_relative_value = "{$command[2]}#{$command[4]}"; // /E0W3& 2=> 0 4 => 3
+            } catch (\Throwable $th) {
+                $last_sent_relative_value = 'X#X'; // no relative value 
+            }
             # execute command on the fly, if the orbs is connected then it will be ping
             $command =  "bash -c \"exec nohup setsid echo '$command' | timeout 2s netcat $ip_address 9950\""; 
             $result = exec($command);
@@ -46,13 +51,13 @@
             $updateOrbsStatusQuery ="UPDATE orb_status_log SET tested=1, connection_status=$status WHERE `orb_ip` = inet_aton('$ip_address') AND tested=0;";
             $db->query($updateOrbsStatusQuery);
 
-            $updatetest = "UPDATE orbs SET testing=$status $timestampQuery WHERE `ip` = inet_aton('$ip_address')";
+            $updatetest = "UPDATE orbs SET testing=$status, last_sent_relative_value = '$last_sent_relative_value' $timestampQuery WHERE `ip` = inet_aton('$ip_address')";
             $db->query($updatetest);
+            echo $updatetest, $updateOrbsStatusQuery;
         }
 
-        echo "<br/>", strtotime(date('Y-m-d H:i:s')) < $oneMinuteLater;
-        echo "<br/>", "c ", date('Y-m-d H:i:s') , " d",  date('Y-m-d H:i:s',$oneMinuteLater);
-        echo $updatetest, $updateOrbsStatusQuery;
+        echo "\n", strtotime(date('Y-m-d H:i:s')) < $oneMinuteLater;
+        echo "\n", "c ", date('Y-m-d H:i:s') , " d",  date('Y-m-d H:i:s',$oneMinuteLater);
         sleep(10); // sleep for 10 second to run the process again
     }
   ?>
