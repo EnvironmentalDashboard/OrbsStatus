@@ -107,7 +107,7 @@
         FROM orbs o 
         LEFT JOIN relative_values r1 ON r1.id = o.elec_rvid 
         LEFT JOIN relative_values r2 ON r2.id = o.water_rvid 
-        RIGHT JOIN orb_status_log on orb_status_log.orb_ip = o.ip and orb_status_log.connection_status is not null and testing_date_time >= now() - INTERVAL 1 DAY
+        LEFT JOIN orb_status_log on orb_status_log.orb_ip = o.ip and orb_status_log.connection_status is not null and testing_date_time >= now() - INTERVAL 1 DAY
         WHERE o.disabled = 0  group by o.ip ORDER BY o.name");
 
       foreach ($result as $row) {
