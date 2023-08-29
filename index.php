@@ -333,7 +333,7 @@
           ip_address,
           testingDate
         }, (data, textStatus, jqueryXHR) => {
-          parentRow.removeClass('connected disconnected').addClass('.testing-row');
+          parentRow.removeClass('connected disconnected').addClass('testing-row');
 
           if (jqueryXHR.status == 200) {
             let counter = 0;
@@ -416,7 +416,7 @@
       $.post('get_orbs_updated_status.php', {}, (responseData, textStatus, jqueryXHR) => {
         if (jqueryXHR.status == 200 && Array.isArray(responseData)) {
           responseData.forEach((data, index) => {
-            const parentRow = $(`.table-content tbody tr:nth-child(${index+1}:not(.testing-row)`);
+            const parentRow = $(`.table-content tbody tr:nth-child(${index+1}):not(.testing-row)`);
             parentRow.removeClass('connected disconnected').addClass(data.backgroundClass)
 
             parentRow.find('.electricity-rv').text(data.electricityRV);
