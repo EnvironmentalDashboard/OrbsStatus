@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y zlib1g-dev libzip-dev && \
     docker-php-ext-install zip pdo_mysql && \
     a2enmod rewrite headers
 
-RUN apt-get install -y nano && apt-get install -y netcat && apt-get install -y iputils-ping
+RUN apt-get install -y nano && apt-get install -y netcat && apt-get install -y iputils-ping && apt-get -y install cron
 
 COPY . .
 
