@@ -1,4 +1,5 @@
 <?php
+    /* this file is to run the test commands on orbs, it is run on every 1 minute duration. And run for 1 minute untill while loop is true */
     require 'db.php';
     require 'ping-ip-address.php';
 
