@@ -24,17 +24,18 @@
 * * * * * cd /home/kiosk2/oberlin-orbs && /usr/bin/git pull >> /var/www/html/oberlin-orbs-git-pull.log 2>&1
 
 #this script is what sends the data packets to the orbs using netcat every second minute
-* * * * * php /home/kiosk2/oberlin-orbs/orbs.php
+#* * * * * php /home/kiosk2/oberlin-orbs/orbs.php older command
+* * * * * /usr/bin/php /var/www/html/run-orbs.php #moved oberlin-orbs/orbs.php into run-orbs.php
 
 
 #this script is what sends the data packets to the orbs using netcat every second minute and adds the functionality to check if a diagnostic field is active for checking orbs functionality from oliver's orb status page
 # */1 * * * * php /home/kiosk2/oberlin-orbs/orbs-diagnostic.php
 
 #this launches digital signage software at 9 am every day
-* 09 * * * media-player
+# * 09 * * * media-player
 
 #this reboots the computer at 6 am every day
-0 6 * * * /sbin/shutdown -r +58
+# 0 6 * * * /sbin/shutdown -r +58
 
 #this cron will check orbs connectivity
 */15 * * * * /usr/bin/php /var/www/html/check-orbs-connectivity.php >> /var/www/html/check-orbs-connectivity.log 2>&1
