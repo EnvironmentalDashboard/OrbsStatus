@@ -141,6 +141,7 @@
           <td class="table-cell">
             <div class="table-cell-data">
               <span class="orb-name"><?php echo $row['name'] ?></span>
+              <!-- <span class="badge test-colors <?= $backgroundClass ?>"><?= $backgroundClass ?></span> -->
               <!-- <span class="badge bg-info text-dark">View Log</span> -->
             </div>
           </td>
@@ -329,7 +330,8 @@
 
 
       $.post('update.php', {
-          command: `/E${electricity_rv}W${water_rv}&`,
+          // command: `/E${electricity_rv}W${water_rv}&`,
+          command: `\!E${electricity_rv}W${water_rv}i0Fh01t01=`,
           ip_address,
           testingDate
         }, (data, textStatus, jqueryXHR) => {
