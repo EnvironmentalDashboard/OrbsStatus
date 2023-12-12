@@ -11,11 +11,14 @@ RUN apt-get update && apt-get install -y zlib1g-dev libzip-dev && \
     docker-php-ext-install zip pdo_mysql && \
     a2enmod rewrite headers
 
-RUN apt-get install -y nano && apt-get install -y netcat && apt-get install -y iputils-ping && apt-get -y install cron
+RUN apt-get install -y nano && apt-get install -y netcat && apt-get install -y iputils-ping && apt-get -y install cron && apt install -y git
 
 COPY . .
-
+#move the cron jobs command into /etc/crontab
+RUN crontab /var/www/html/crontab_file
 # Ensure permissions to storage folder.
 # RUN chown -R pratyush:pratyush /var/www/html
 RUN chown -R www-data:www-data *
 RUN chmod -R 755 *
+#start cronjob
+ENTRYPOINT ["cron", "-f"]
