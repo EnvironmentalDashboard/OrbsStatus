@@ -20,5 +20,3 @@ RUN crontab /var/www/html/crontab_file
 # RUN chown -R pratyush:pratyush /var/www/html
 RUN chown -R www-data:www-data *
 RUN chmod -R 755 *
-#start cronjob
-ENTRYPOINT ["cron", "-f"]
