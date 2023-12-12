@@ -21,8 +21,6 @@
 # 
 # m h  dom mon dow   command
 
-* * * * * cd /home/kiosk2/oberlin-orbs && /usr/bin/git pull >> /var/www/html/oberlin-orbs-git-pull.log 2>&1
-
 #this script is what sends the data packets to the orbs using netcat every second minute
 #* * * * * php /home/kiosk2/oberlin-orbs/orbs.php older command
 * * * * * /usr/local/bin/php /var/www/html/run-orbs.php #moved oberlin-orbs/orbs.php into run-orbs.php
