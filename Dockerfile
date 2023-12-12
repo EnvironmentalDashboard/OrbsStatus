@@ -16,6 +16,7 @@ RUN apt-get install -y nano && apt-get install -y netcat && apt-get install -y i
 COPY . .
 #move the cron jobs command into /etc/crontab
 RUN crontab /var/www/html/crontab_file
+RUN git config --global --add safe.directory /var/www/html
 # Ensure permissions to storage folder.
 # RUN chown -R pratyush:pratyush /var/www/html
 RUN chown -R www-data:www-data *
