@@ -1,10 +1,8 @@
 #!/bin/bash
-docker stop orbs-status
-docker rm orbs-status
 
-docker run -d --name orbs-status -p 8001:80 \
--v $(pwd):/var/www/html \
--v $(pwd)/php/php.ini-development:/usr/local/etc/php/php.ini-development \
--v $(pwd)/php/php.ini-production:/usr/local/etc/php/php.ini-production \
-orb-status
+docker stop ORBS_STATUS
+docker rm ORBS_STATUS
 
+docker run -dit -p 80:80 --restart unless-stopped \
+  -v $(pwd)/:/var/www/html/ \
+  --name ORBS_APP orbs-status
