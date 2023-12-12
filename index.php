@@ -131,7 +131,7 @@
         } else if ($row['testing'] == FAILED) {
           $backgroundClass = "disconnected";
         }
-        $date = new DateTimeImmutable($row['last_connectioned_on']);
+        $date = new DateTimeImmutable($row['last_connectioned_on'] ?? '');
 
         $ip_address = $row['ip_address'];
 
