@@ -14,6 +14,9 @@ RUN apt-get update && apt-get install -y zlib1g-dev libzip-dev && \
 RUN apt-get install -y nano && apt-get install -y netcat && apt-get install -y iputils-ping && apt-get -y install cron && apt install -y git
 
 COPY . .
+COPY .git .git
+COPY remote.php /var/secret/remote.php
+
 #move the cron jobs command into /etc/crontab
 RUN crontab /var/www/html/crontab_file
 RUN git config --global --add safe.directory /var/www/html
@@ -21,3 +24,6 @@ RUN git config --global --add safe.directory /var/www/html
 # RUN chown -R pratyush:pratyush /var/www/html
 RUN chown -R www-data:www-data *
 RUN chmod -R 755 *
+#mark permission
+RUN chown www-data:www-data /var/secret/remote.php
+RUN chmod 755 /var/secret/remote.php
