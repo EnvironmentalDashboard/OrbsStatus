@@ -18,7 +18,14 @@ COPY .git .git
 COPY remote.php /var/secret/remote.php
 
 #move the cron jobs command into /etc/crontab
-RUN crontab /var/www/html/crontab_file
+COPY crontab_file /etc/crontab
+RUN crontab crontab_file
+# Create the log file to be able to run tail
+RUN touch /var/log/cron.log
+# Run the command on container startup
+CMD sh start_cron_apache_service.sh
+
+
 RUN git config --global --add safe.directory /var/www/html
 # Ensure permissions to storage folder.
 # RUN chown -R pratyush:pratyush /var/www/html

@@ -2,8 +2,7 @@
     if(count($_POST) == 0){
     header('Location:index.php');
     }
-?>
-<?php
+
     require 'db.php';
     require 'ping-ip-address.php';
     $testingDate = date('Y-m-d H:i:s', $_POST['testingDate']);
@@ -75,5 +74,5 @@
         "message" => "Orb is disconnected",
       ]);
     }
-    
+
   ?>
