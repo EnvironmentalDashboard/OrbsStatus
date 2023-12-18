@@ -27,9 +27,10 @@ function checkIp($ip){
       die($e->getMessage());
     }
 
-    $insertTestLog = "INSERT INTO orb_status_log(orb_ip, command, testing_date_time) VALUES(INET_ATON('$ip_address'), '$command', '$testingDate')";
-
-    $db->query($insertTestLog);
+    $insertTestLog = "INSERT INTO orb_status_log(orb_ip, command, testing_date_time) VALUES(INET_ATON('$ip_address'), ?, ?)";
+    $stmt = $db->prepare($insertTestLog);
+    $stmt->execute([$command, $testingDate]);
+    // $db->query($insertTestLog);
     /* end status updated */
 
     /* send response back to index page */
