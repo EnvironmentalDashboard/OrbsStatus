@@ -4,14 +4,14 @@ if(count($_POST) == 0){
 }
 ?>
 <?php
-  $status = null;
 
-  include "./ping-ip-address.php";
+include "./ping-ip-address.php";
 
-  const SUCCESS = 1;
-  const FAILED = 0;
-  
-  function checkIp($ip){
+const SUCCESS = 1;
+const FAILED = 0;
+
+function checkIp($ip){
+    $status = null;
     $command = $_POST['command'];
     $testingDate = date('Y-m-d H:i:s', $_POST['testingDate']);
     $ip_address  = $ip ? $ip : $_POST['ip_address'];    

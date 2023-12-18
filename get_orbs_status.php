@@ -6,7 +6,7 @@
     require 'db.php';
     require 'ping-ip-address.php';
     $testingDate = date('Y-m-d H:i:s', $_POST['testingDate']);
-    $ip_address  = $ip ? $ip : $_POST['ip_address'];
+    $ip_address  = $_POST['ip_address'];
     // date_default_timezone_set("America/New_York");
 
     set_time_limit(-1);
