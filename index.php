@@ -330,7 +330,9 @@
 
       $.post('update.php', {
           // command: `/E${electricity_rv}W${water_rv}&`,
-          command: `\!E${electricity_rv}W${water_rv}i0Fh01t01=`,
+          //'\!W2E2iAAh10t20='
+          //'\!W2E2i0Fh01t01='
+          command: `\\!E${electricity_rv}W${water_rv}i10h10t20=`,
           ip_address,
           testingDate
         }, (data, textStatus, jqueryXHR) => {
