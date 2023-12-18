@@ -174,7 +174,7 @@
                 not showing the relative value from relative_valbe table,
                 instead we'll show the command value sent to th orb in every minute from oberlin-orb/orb.php file
               */
-              
+
               // if (is_numeric($elecrel)) {
               //   $elecrel = (int)(($elecrel / 100) * 4);
               // }else {
@@ -403,7 +403,7 @@
         $('.alert').fadeOut()
       }, 10000);
       if (data.update_date) {
-        parentRow.find('td.last-update').text(data.update_date);
+        parentRow.find('.last-connectioned-on').text(data.update_date);
       }
       /* set back the button title after getting result */
       button.addClass('btn-primary').text('Test')
@@ -426,7 +426,7 @@
             parentRow.find('.fail-ping').text(data.failPing);
             parentRow.find('.success-ping').text(data.successPing);
 
-            parentRow.find('.last-update .last-connectioned-on').text(data.last_connectioned_on);
+            parentRow.find('.last-connectioned-on').text(data.last_connectioned_on);
             // data.ip_address
           })
         }
