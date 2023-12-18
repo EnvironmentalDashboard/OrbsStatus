@@ -4,6 +4,8 @@ if(count($_POST) == 0){
 }
 ?>
 <?php
+  $status = null;
+
   include "./ping-ip-address.php";
 
   const SUCCESS = 1;
@@ -13,7 +15,7 @@ if(count($_POST) == 0){
     $command = $_POST['command'];
     $testingDate = date('Y-m-d H:i:s', $_POST['testingDate']);
     $ip_address  = $ip ? $ip : $_POST['ip_address'];    
-    
+
     /* update database status */
     require 'db.php';
     $con = "mysql:host={$host};dbname={$dbname};charset=utf8;port=3306";

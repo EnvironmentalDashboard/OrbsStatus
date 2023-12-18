@@ -1,5 +1,6 @@
 <?php
 
+$status = null;
 
 function pingIpAddress($ip_address)
 {
