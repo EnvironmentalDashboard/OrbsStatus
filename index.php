@@ -90,7 +90,7 @@
       <?php
       $db->query("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
 
-      $result = $db->query("SELECT
+      $query = "SELECT
           sum(CASE WHEN orb_status_log.connection_status = 1 THEN 1 ELSE 0 END) as success,
           sum(CASE WHEN orb_status_log.connection_status = 0 THEN 1 ELSE 0 END) as fail,
           last_sent_relative_value,
@@ -108,23 +108,17 @@
         LEFT JOIN relative_values r1 ON r1.id = o.elec_rvid 
         LEFT JOIN relative_values r2 ON r2.id = o.water_rvid 
         LEFT JOIN orb_status_log on orb_status_log.orb_ip = o.ip and orb_status_log.connection_status is not null and testing_date_time >= now() - INTERVAL 1 DAY
-        WHERE o.disabled = 0  group by o.ip ORDER BY o.name");
+        WHERE o.disabled = 0  group by o.ip ORDER BY o.name";
+      // echo $query;
+      // exit;
+      $result = $db->query($query);
 
       foreach ($result as $row) {
         // print_r($row);
         // exit;
         $waterrel = $row['water_rv'];
         $elecrel = $row['elec_rv'];
-        $wgone = false;
-        $egone = false;
-        if (empty($waterrel) && $waterrel != 0) {
-          $waterrel = "N/A";
-          $wgone = true;
-        }
-        if (empty($elecrel) && $elecrel != 0) {
-          $elecrel = "N/A";
-          $egone = true;
-        }
+
         $backgroundClass = '';
         if ($row['testing'] == SUCCESS) {
           $backgroundClass = "connected";
@@ -180,31 +174,34 @@
                 not showing the relative value from relative_valbe table,
                 instead we'll show the command value sent to th orb in every minute from oberlin-orb/orb.php file
               */
-              /* $rv = 'N/A';
-              if (!$egone) {
-                $rv = (int)(($elecrel / 100) * 4);
-              }
-              echo "Electricity - <strong>$rv</strong> |";
-              ?>
-              <?php
-              $rv = 'N/A';
-              if (!$wgone) {
-                $rv = (int)(($waterrel / 100) * 4);
-              }
-              echo "Water - <strong>$rv</strong>"; */
-              $rv = 'N/A';
+              
+              // if (is_numeric($elecrel)) {
+              //   $elecrel = (int)(($elecrel / 100) * 4);
+              // }else {
+              //   $elecrel = 'N/A';
+              // }
+
+              // if (is_numeric($waterrel)) {
+              //   $waterrel = (int)(($waterrel / 100) * 4);
+              // }else {
+              //   $waterrel = 'N/A';
+              // }
+
+
+              echo "<template>Electricity - $elecrel || Water - $waterrel</template>";
+              $elecrel = 'N/A';
+              $waterrel = 'N/A';
+
               $last_sent_relative_value = explode('#', $row['last_sent_relative_value']);
               if (isset($last_sent_relative_value[0]) && is_numeric($last_sent_relative_value[0])) {
-                $rv = $last_sent_relative_value[0];
+                $elecrel = $last_sent_relative_value[0];
               }
-              echo "Electricity - <strong class='electricity-rv'>$rv</strong> |";
-              ?>
-              <?php
-              $rv = 'N/A';
               if (isset($last_sent_relative_value[1]) && is_numeric($last_sent_relative_value[1])) {
-                $rv = $last_sent_relative_value[1];
+                $waterrel = $last_sent_relative_value[1];
               }
-              echo "Water - <strong class='water-rv'>$rv</strong>";
+
+              echo "Electricity - <strong class='electricity-rv'>$elecrel</strong> |";
+              echo "Water - <strong class='water-rv'>$waterrel</strong>";
               ?>
             </div>
           </td>
@@ -324,6 +321,8 @@
       parentRow.find('.electricity-badge').css('background', electricityColors[electricity_rv])
       parentRow.find('.water-badge').css('background', waterColors[water_rv])
 
+      parentRow.find('.electricity-rv').text(electricity_rv);
+      parentRow.find('.water-rv').text(water_rv);
       /* set orb name & ip in alert message */
       $('.message .orb-name').text(orb_name)
       $('.message .orb-ip').text(ip_address)
