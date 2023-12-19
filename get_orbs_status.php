@@ -43,11 +43,12 @@
         }
 
         $electricityRV = 'N/A';
+        $waterRV = 'N/A';
+
         $last_sent_relative_value = explode('#', $row['last_sent_relative_value']);
         if (isset($last_sent_relative_value[0]) && is_numeric($last_sent_relative_value[0])) {
             $electricityRV = $last_sent_relative_value[0];
         }
-        $waterRV = 'N/A';
         if (isset($last_sent_relative_value[1]) && is_numeric($last_sent_relative_value[1])) {
         $waterRV = $last_sent_relative_value[1];
         }

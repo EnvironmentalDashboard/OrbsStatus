@@ -35,7 +35,11 @@
             $ip_address = $row['ip_address'];
             echo "\n", $command, $ip_address;
             try {
-                $last_sent_relative_value = "{$command[2]}#{$command[4]}"; // /E0W3& 2=> 0 4 => 3
+                // Normal mode - /E0W3& 2=> 0 4 => 3
+                //$last_sent_relative_value = "{$command[2]}#{$command[4]}"; //
+
+                // Extended Normal Mode \!E2W3i0Fh01t01= 3=> 0 5 => 3
+                $last_sent_relative_value = "{$command[3]}#{$command[5]}"; 
             } catch (\Throwable $th) {
                 $last_sent_relative_value = 'X#X'; // no relative value 
             }
